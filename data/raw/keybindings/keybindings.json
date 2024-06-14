@@ -234,7 +234,7 @@
     "type": "keybinding",
     "id": "DOWN",
     "category": "PICKUP",
-    "name": "Next item",
+    "name": "Next item lololol",
     "bindings": [
       { "input_method": "keyboard", "key": "j" },
       { "input_method": "keyboard", "key": "DOWN" },
@@ -262,6 +262,13 @@
       { "input_method": "keyboard", "key": "RIGHT" },
       { "input_method": "gamepad", "key": "JOY_RIGHT" }
     ]
+  },
+  {
+    "type": "keybinding",
+    "id": "EXAMINE",
+    "category": "PICKUP",
+    "name": "Examine item",
+    "bindings": [ { "input_method": "keyboard", "key": "e" } ]
   },
   {
     "type": "keybinding",

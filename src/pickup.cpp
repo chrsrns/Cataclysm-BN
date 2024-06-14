@@ -762,6 +762,7 @@ void pickup::pick_up( const tripoint &p, int min, from_where get_items_from )
         ctxt.register_action( "ANY_INPUT" );
         ctxt.register_action( "HELP_KEYBINDINGS" );
         ctxt.register_action( "FILTER" );
+        ctxt.register_action( "EXAMINE" );
 #if defined(__ANDROID__)
         ctxt.allow_text_entry = true; // allow user to specify pickup amount
 #endif
@@ -952,6 +953,28 @@ void pickup::pick_up( const tripoint &p, int min, from_where get_items_from )
                 if( *itemcount == 0 ) {
                     itemcount.reset();
                 }
+            } else if( action == "EXAMINE" ) {
+                if( selected < 0 ) {
+                    popup( _( "Nothing selected!  Press [<color_yellow>ESC</color>]!" ) );
+                    // recalc = true;
+                    continue;
+                }
+
+                const item &selected_item = **stacked_here[matches[selected]].front();
+                item *loc = *stacked_here[matches[selected]].front();
+                temperature_flag temperature = rot::temperature_flag_for_location( get_map(), *loc );
+
+                std::vector<iteminfo> this_item = selected_item.info( temperature );
+                item_info_data dummy( {}, {}, this_item, {}, iScrollPos );
+                dummy.handle_scrolling = true;
+                draw_item_info( []() -> catacurses::window {
+                    const int width = std::min( TERMX, FULL_SCREEN_WIDTH );
+                    const int height = std::min( TERMY, FULL_SCREEN_HEIGHT );
+                    return catacurses::newwin( height, width, point( ( TERMX - width ) / 2, ( TERMY - height ) / 2 ) );
+                }, dummy );
+
+                // recalc = true;
+                // keepline = true;
             } else if( action == "SCROLL_UP" ) {
                 iScrollPos--;
             } else if( action == "SCROLL_DOWN" ) {
